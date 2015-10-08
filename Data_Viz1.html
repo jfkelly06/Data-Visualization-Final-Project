@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <style>
+
+    h2 {
+      text-align: center;
+      color: #666;
+      font-family: Helvetica;
+    }
+
+  </style>
+
+  <script type="text/javascript">
+    function draw(data) {
+
+      /*
+       D3.js setup code
+       */
+      // code should be executed in "strict mode", e.g use undeclared variables
+      // "use strict";
+      var margin = 75, width = 1000 - margin, height = 700 - margin;
+      d3.select("body").append("h2").text("HR by Player BMI");
+
+      var svg = d3.select("body").append("svg").attr("width", width + margin).attr("height", height + margin).append("g").attr("class", "chart");
+
+      // Dimple.js Chart construction code
+      
+      var myChart = new dimple.chart(svg, data);
+      myAxis = myChart.addMeasureAxis("x", "BMI");
+      myAxis.overrideMin = 18.0;
+      myAxis.overrideMax = 32.0;
+
+
+      myLogAxis = myChart.addLogAxis("y", "HR", 2);
+      myLogAxis.overrideMin = 0.0;
+      myLogAxis.overrideMax = 3.0;
+      
+      
+      
+      myChart.addMeasureAxis("z", "avg");
+      myChart.addSeries(["name", "handedness"], dimple.plot.bubble);
+      
+      myRegression = myChart.addSeries("lm", dimple.plot.line);
+      myChart.addLegend(400, 10, 360, 20, "left");
+      myChart.draw();
+
+      svg.selectAll(".dimple-series-0").attr("opacity", "0.6").attr("r", 6);
+        
+    };
+
+    </script>
+</head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data.csv", draw);
+  </script>
+</body>
+</html>
