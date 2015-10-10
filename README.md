@@ -10,8 +10,11 @@ After conducting the data exploration in R, I decided to construct a scatterplot
 ##Feedback:
 ###Questions:
 •	What do you notice in the visualization?
+
 •	What relationships do you notice?
+
 •	What is the main message?
+
 •	Is there something you do not understand about the graphic or areas of improvement?
 
 1.	The chart is way overpotted. Can you reduce the size of the bubbles and adjust the opacity? Interesting visualization, but there does not appear to be much relationship between the two variables. Is there any way you can add a trend line to illustrate the impact of BMI on home runs? 
