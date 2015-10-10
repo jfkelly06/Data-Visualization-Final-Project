@@ -6,7 +6,6 @@ Baseball Data Exploration by James Kelly
 library(ggplot2)
 library(dplyr)
 library(gridExtra)
-library(GGally)
 ```
 
 #Project Summary
@@ -14,7 +13,7 @@ For this project I intend to explore the relationship between player size (heigh
 
 #Data Summary
 ```{r echo=FALSE, Load_the_Data}
-baseball_data <- read.csv('baseball_data.csv')
+baseball_data <- read.csv('C:/Users/jkelly/Desktop/Data Viz/baseball_data.csv')
 dim(baseball_data)
 str(baseball_data)
 names(baseball_data)
@@ -64,7 +63,7 @@ qplot(x = power, data = baseball_data,
   ggtitle('Power')
 
 ```
-In this section I explored the distributions for several variables. The data is, for the most part, normally distributed though their is some inherent discreteness for height and weight because the data points are integers rather than floats. Home runs are the only variable that have a long tail and require a log10 transformation.
+In this section I explored the distributions for several variables. The data is, for the most part, normally distributed though their is some inherent discreteness for height and weight because the data points are integers rather than floats. This resulted in considerable discreteness for BMI. Home runs are the only variable that have a long tail and require a log10 transformation.
 
 #Bivariate Plots
 ```{r echo=FALSE, Bivariate_Plots}
@@ -87,7 +86,7 @@ ggplot(aes(x = BMI, y = log10(HR)),
   geom_point(position = position_jitter(h = .05, w = 0.3)) +
   ggtitle('Log10 HR v. BMI')
 
-cor.test(baseball_dat2$BMI, log10(baseball_data$HR), method = 'pearson')
+cor.test(baseball_data$BMI, log10(baseball_data$HR), method = 'pearson')
 
 ggplot(aes(x = BMI, y = log10(power)),
        data = baseball_data) +
@@ -127,12 +126,17 @@ ggplot(aes(x = BMI, y = log10(HR)),
   geom_smooth() +
   ggtitle('Log10 HR v. BMI')
 
-ggplot(aes(x = BMI, y = log10(power), size = 2),
+ggplot(aes(x = BMI, y = log10(power)),
        data = baseball_data) +
   geom_point(aes(color = handedness),
              position = position_jitter(h = 0.1, w = 0.3)) +
   geom_smooth() +
-  ggtitle('Power v. BMI')      
+  ggtitle('Power v. BMI') 
+
+fit <- lm(log10HR ~ BMI, data = baseball_data)
+print(fit)
+
+baseball_data$lm <- ((.07736 * baseball_data$BMI) - .46399)
 ```
 
 In this section, I created the same plots as those in the bivariate plots section, but included the handedness variable. I had hoped the superiority of lefties and inferiority of switch hitters would be more clear, but unfortunately it was not.
