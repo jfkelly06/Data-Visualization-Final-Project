@@ -25,6 +25,16 @@ After conducting the data exploration in R, I decided to construct a scatterplot
 3.	I like this chart quite a bit. It may be a bit overwhelming for some viewers since it conveys a lot of information. You may want to consider removing some of the visual encodings or variables to simplify the chart a bit. Also it the vertical lines are a bit odd, but it makes sense given that some of the BMI measurements were rounded.
 
   a.	I considered removing batting average, but ultimately decided to keep it in there since other interviewees did not take issue with all the information that is displayed. 
+  
+4.	The chart is visually appealing, but it’s tough for the viewer to draw a conclusion. It’s tough to answer the title question: do heftier players have more home run power? Is there something you can do to guide the viewer a bit more?
+  
+  a. a.	I added a trendline to show the weak, but non-trivial relationship between player BMI and home run power. This was not a trivial task and it took quite a long time. I added a regression function to my code and plotted the endpoints of a line based on the output. It definitely alters the reader to the weak relationship between BMI and HR count.
+
+5.	In my first submission, the reviewer suggested that I remove the visual encoding for handedness and limit the analysis to players with a BMI between 22-26. Regarding the extra visual encoding for handedness, I agree that it does increase the cognitive load on the viewer. Normally this is a bad thing, but in this case I think it is acceptable since it has the ancillary benefit of making the chart more visually appealing. For that reason I chose to leave it in. A also did not limit the x axis to 22-26 because the linear regression accounts for the concentration of data in that range. 
+
+6.	In my second submission, the reviewer echoed some of the same concerns as the prior reviewer. Decided to bin the players by BMI into two categories, those with a healthy BMI, and those who are overweight. I colored the plots by this new variable to provide the reader with a visual cue to alert them that BMI is critical here. I also added a table showing the average Home Run count for each group. I suspect viewers will find this particularly helpful since the y-axis is on a log scale. Lastly, I added jitted to the x-axis to reduce overplotting. I did this by adding a random variable (between -0.5 and 0.5) to BMI. This significantly reduced overplotting and the chart looks much more appealing! Thanks to the reviewers for their great feedback.
+
+
  
 ##Resources:
 •	http://dimplejs.org/examples_index.html
