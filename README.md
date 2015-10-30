@@ -38,11 +38,17 @@ After conducting the data exploration in R, I decided to construct a scatterplot
  
 ##Resources:
 •	http://dimplejs.org/examples_index.html
+
 •	Udacity discussion forums
+
 •	Stackoverflow.com
+
 •	https://www.dashingd3js.com/svg-basic-shapes-and-d3js 
+
 •	https://github.com/PMSI-AlignAlytics/dimple/issues/59 
+
 •	http://www.localwisdom.com/blog/2014/01/get-trend-line-javascript-graph-linear-regression/ 
+
 •	Various other Github repositories
 
 
