@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <style>
+
+    h2 {
+      text-align: center;
+      color: #666;
+      font-family: Helvetica;
+    }
+
+    h3 {
+      text-align: center;
+      color: #666;
+      font-family: Helvetica;
+    }
+    table {
+      position: absolute;
+      bottom:50px;
+      margin-left: 30%;
+      margin-right: 30%;
+      text-align: center;
+      color: #666;
+      font-family: Helvetica;
+    }
+  </style>
+
+  <script type="text/javascript">
+
+//Create Linear Regression Function
+    function linearRegression(y,x){
+      var lr = {'slope': 0,'intercept': 0, 'r2': 0};
+      var n = y.length;
+      var sum_x = 0;
+      var sum_y = 0;
+      var sum_xy = 0;
+      var sum_xx = 0;
+      var sum_yy = 0;
+
+      for (var i = 0; i < y.length; i++) {
+
+        sum_x += x[i];
+        sum_y += y[i];
+        sum_xy += (x[i]*y[i]);
+        sum_xx += (x[i]*x[i]);
+        sum_yy += (y[i]*y[i]);
+        }
+
+      lr.slope = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+      lr.intercept = (sum_y - lr.slope * sum_x)/n;
+      lr.r2 = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+
+      return lr;  
+    }
+ //Run Linear Regression Function   
+    var known_y = [];
+    var known_x = [];
+
+
+    d3.csv("baseball_data.csv", function(data) {
+        for (d in data) {
+          known_y.push(Number(data[d].log10HR));
+          known_x.push(Number(data[d].BMI));
+        }
+    });
+
+    function draw(data) {
+
+      /*
+       D3.js setup code
+       */
+      // code should be executed in "strict mode", e.g use undeclared variables
+      // "use strict";
+      var margin = 75, width = 1000 - margin, height = 700 - margin;
+      d3.select("body").append("h2").text("Home Run Count by Player BMI");
+      d3.select("body").append("h3").text("Do Heftier Players Have More Home Run Power?");
+
+      var svg = d3.select("body").append("svg").attr("width", width + margin).attr("height", height + margin).append("g").attr("class", "chart")
+      var trendline = svg.append("svg:line").attr("x1", 100).attr("y1",555-100).attr("x2", 900).attr("y2", 350-100).attr("stroke-width", 2).attr("stroke", "black");
+      
+
+      // Dimple.js Chart construction code
+      
+      var myChart = new dimple.chart(svg, data);
+      myAxis = myChart.addMeasureAxis("x", "adj_BMI");
+      myAxis.overrideMin = 20.0;
+      myAxis.overrideMax = 30.0;
+      myAxis.title = 'Baseball Player Body Mass Index(BMI)';
+      
+
+
+      myLogAxis = myChart.addMeasureAxis("y", "log10HR", 2);
+      myLogAxis.overrideMin = 0.0;
+      myLogAxis.overrideMax = 3.0;
+      myLogAxis.title = 'Home Run Count (log scale)';
+      
+
+      myChart.addMeasureAxis("z", "avg");
+      myChart.addSeries(["name", "range"], dimple.plot.scatter);
+      
+      myChart.addLegend(400, 10, 360, 20, "left");
+      myChart.draw();
+
+      svg.selectAll(".dimple-series-0").attr("opacity", "0.6").attr("r", 6); 
+    };
+
+    </script>
+</head>
+
+<body>
+  <table border="5">
+    <tr>
+      <th>Average # HR Healthy</th>
+      <th>Average # HR Overweight</th>
+    </tr>
+    <tr>
+      <td>52.95</td>
+      <td>70.19</td>
+    </tr>
+  </table>
+  
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data_final.csv", draw);
+  </script>
+</body>
+</html>

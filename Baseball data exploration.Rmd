@@ -5,7 +5,6 @@ Baseball Data Exploration by James Kelly
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 library(ggplot2)
 library(dplyr)
-library(gridExtra)
 ```
 
 #Project Summary
@@ -13,7 +12,7 @@ For this project I intend to explore the relationship between player size (heigh
 
 #Data Summary
 ```{r echo=FALSE, Load_the_Data}
-baseball_data <- read.csv('C:/Users/jkelly/Desktop/Data Viz/baseball_data.csv')
+baseball_data <- read.csv('C:/Users/jkelly/Desktop/Data Viz/baseball_data_final.csv')
 dim(baseball_data)
 str(baseball_data)
 names(baseball_data)
@@ -108,6 +107,16 @@ Next, I attempted to create a metric to capture hitters' power. There are alread
 
 Indeed, after creating another scatterplot between BMI and "power" there does to a relationship between the two variables. A pearson test the relationship is slightly stronger than that between BMI and home runs, but the "power" variable is a bit odd so I will not pursue this much further.
 
+Based on feedback from reviewers, I will bin BMI based on how healthy their bodyweight is.
+
+```{r}
+baseball_data$range <- ifelse(baseball_data$BMI < 25, 'healthy', 'overweight')
+
+baseball_data$range <- ordered(baseball_data$range,
+                     levels = c('healthy', 'overweight'))
+summary(baseball_data$range)
+```
+
 #Multivariate Plots
 ```{r echo=FALSE, Multivariate_Plots}
 
@@ -139,7 +148,17 @@ print(fit)
 baseball_data$lm <- ((.07736 * baseball_data$BMI) - .46399)
 ```
 
-In this section, I created the same plots as those in the bivariate plots section, but included the handedness variable. I had hoped the superiority of lefties and inferiority of switch hitters would be more clear, but unfortunately it was not.
+In this section, I created the same plots as those in the bivariate plots section, but included the handedness variable. I had hoped the superiority of lefties and inferiority of switch hitters would be more clear, but unfortunately it was not. I will instead color the plots by the range variable.
+```{r}
+ggplot(aes(x = BMI, y = log10(power)),
+       data = baseball_data) +
+  geom_point(aes(color = range),
+             position = position_jitter(h = 0.1, w = 0.3)) +
+  geom_smooth() +
+  ggtitle('Power v. BMI')
+```
+
+
 
 #Export to CSV
-write.csv(baseball_data, file = "baseball_data.csv", row.names=FALSE)
+write.csv(baseball_data, file = "C:/Users/jkelly/Desktop/Data Viz/baseball_data_final.csv", row.names=FALSE)
